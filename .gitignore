@@ -1,0 +1,11 @@
+target
+project/target
+.idea/
+build
+/bin/
+.classpath
+.project
+.project/
+src/test/java/com/proteccion/advance/viabilidad/RunCucumber
+
+
