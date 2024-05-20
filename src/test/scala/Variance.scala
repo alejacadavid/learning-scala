@@ -3,8 +3,6 @@ import org.scalatest.matchers.should.Matchers
 
 class Variance extends AnyFlatSpec with Matchers {
 
-
-
   "A covariant Zoo" should "allow assigning a Zoo[Dog] to a Zoo[Animal]" in {
     class Animal {
       def sound: String = "Some sound"
@@ -66,5 +64,28 @@ class Variance extends AnyFlatSpec with Matchers {
     stringBox.content should be ("Hi")
   }
 
+
+  trait SchoolSupply
+  case class Pencil(name: String) extends SchoolSupply
+
+  "A covariance of school supplies box" should "allow creating a box of subtypes" in {
+    class Box[+A]
+    "val box: Box[SchoolSupply] = new Box[Pencil]" should compile
+    "val box: Box[Pencil] = new Box[SchoolSupply]" shouldNot compile
+  }
+
+  "A contravariance of school supplies box" should "allow creating a box of supertypes" in {
+    class Box[-A]
+    "val box: Box[Pencil] = new Box[SchoolSupply]" should compile
+    "val box: Box[SchoolSupply] = new Box[Pencil]" shouldNot compile
+  }
+
+  "A invariant of school supplies box" should "allow creating a box of the same type" in {
+    class Box[A]
+    "val box: Box[Pencil] = new Box[Pencil]" should compile
+    "val box: Box[SchoolSupply] = new Box[SchoolSupply]" should compile
+    "val box: Box[SchoolSupply] = new Box[Pencil]" shouldNot compile
+    "val box: Box[Pencil] = new Box[SchoolSupply]" shouldNot compile
+  }
 
 }
